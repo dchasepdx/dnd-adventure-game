@@ -11,11 +11,13 @@ export default class Controls extends Component {
       stanHealth: this.props.chars.stan.health,
       enemyHealth: this.props.chars.orc.health,
       damage: null,
-      playerTurn: false
+      playerTurn: 'init'
     };
     this.fight = this.fight.bind(this);
     this.damage = this.damage.bind(this);
   }
+
+//keep ternary operator in mind when refactoring
 
   damage(char) {
     let charHealth;
@@ -32,15 +34,15 @@ export default class Controls extends Component {
     }
   }
 
-  fight(char) {
-    
+  fight(char, enemy) {
     let roll = diceRoller(20, 1) + this.props.chars[char].atk;
-    if(roll >= this.props.chars[char].ac) {
+    console.log(roll, this.props.chars[enemy].ac);
+    if(roll >= this.props.chars[enemy].ac) {
       this.setState({hit: true, roll: roll});
       this.damage(char);
+      
     } else {
       this.setState({roll: roll, hit: false});
-      this.setState({hit: false});
     }
     this.setState({playerTurn: !this.state.playerTurn});
   }
@@ -50,10 +52,16 @@ export default class Controls extends Component {
     let deadNotification = null;
     let orcNotification = null;
     let button = null;
-    if(this.state.playerTurn) {
+    let turnNotification = null;
+
+    if(this.state.playerTurn === 'init') {
+      hitNotification = <p>A giant Orc is charging at you</p>;
+      button = <button onClick={() => this.fight('stan', 'orc')}>fight!</button>;
+      turnNotification = <span>what do you do?</span>;
+    } else if(this.state.playerTurn === false) {
       if(this.state.roll) {
         if(this.state.hit) {
-          hitNotification = <p>Hit! You rolled: {this.state.roll}. You did {this.state.damage} damage</p>
+          hitNotification = <p>Hit! You rolled: {this.state.roll}. You did {this.state.damage} damage</p>;
           if(this.state.enemyHealth <= 0) {
             deadNotification = <p>The orc is dead!</p>;
           }
@@ -61,10 +69,19 @@ export default class Controls extends Component {
           hitNotification = <p>Miss. You rolled: {this.state.roll} </p>;
         }
       }
-      button = <button onClick={() => this.fight('orc')}>enemy's turn</button>;
+      turnNotification = <span>enemy turn next</span>;
+      button = <button onClick={() => this.fight('orc', 'stan')}>click for enemy turn!</button>;
     } else {
-      button = <button onClick={() => this.fight('stan')}>stan's turn</button>;
-      hitNotification = <p>The orc smacks you</p>;
+      if(this.state.hit) {
+        hitNotification = <p>The Orc smacks you and does {this.state.damage} damage</p>;
+        if(this.state.stanHealth <= 0) {
+          deadNotification = <p>You die</p>;
+        }
+      } else {
+        hitNotification = <p>The orc misses</p>;
+      }
+      button = <button onClick={() => this.fight('stan', 'orc')}>fight!</button>;
+      turnNotification = <span>what do you do?</span>;
     }
 
     return (
@@ -72,6 +89,7 @@ export default class Controls extends Component {
         {hitNotification}
         {deadNotification}
         {orcNotification}
+        {turnNotification}
         {button}
       </div>
     );
