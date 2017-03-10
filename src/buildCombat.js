@@ -1,49 +1,69 @@
 import React, {Component} from 'react';
+import diceRoller from './diceRoller';
+import Controls from './Controls';
+import Turns from './Turns';
+import chars from './chars';
 
-export default class BuildCombat extends Component() {
+export default class BuildCombat extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      chars: chars,
       hit: false,
       roll: null,
       dead: false,
-      stanHealth: this.props.chars.stan.health,
-      enemyHealth: this.props.chars.orc.health,
+      youHealth: chars.You.health,
+      enemyHealth: chars.Orc.health,
       damage: null,
-      playerTurn: 'init'
+      playerTurn: 'init',
+      turns: []
     };
     this.fight = this.fight.bind(this);
     this.damage = this.damage.bind(this);
   }
 
-  render() {
-    let hitNotification = null;
-    let deadNotification = null;
-    let orcNotification = null;
-    let button = null;
-    let turnNotification = null;
-    if(this.state.playerTurn === 'init') {
-      hitNotification = <p>A giant Orc is charging at you</p>;
-      button = <button onClick={() => this.fight('stan', 'orc')}>fight!</button>;
-      turnNotification = <span>stan's turn</span>;
-    } else if(this.state.playerTurn === true) {
-      if(this.state.roll) {
-        if(this.state.hit) {
-          hitNotification = <p>Hit! You rolled: {this.state.roll}. You did {this.state.damage} damage</p>
-          if(this.state.enemyHealth <= 0) {
-            deadNotification = <p>The orc is dead!</p>;
-          }
-        } else {
-          hitNotification = <p>Miss. You rolled: {this.state.roll} </p>;
-        }
-      }
-      turnNotification = <span>enemy's turn</span>;
-      button = <button onClick={() => this.fight('orc', 'stan')}>fight!</button>;
+//keep ternary operator in mind when refactoring
+
+
+  damage(char, turn) {
+    let charHealth;
+    if(char === 'You') {
+      charHealth = this.state.enemyHealth;
+      let roll = diceRoller(6, 1) + this.state.chars[char].atk;
+      charHealth -= roll;
+      turn.enemyHealth = charHealth;
+      turn.damage = roll;
     } else {
-      button = <button onClick={() => this.fight('stan', 'orc')}>fight!</button>;
-      hitNotification = <p>The orc smacks you</p>;
-      turnNotification = <span>stan's turn</span>;
+      charHealth = this.state.youHealth;
+      let roll = diceRoller(6, 1) + this.state.chars[char].atk;
+      charHealth -= roll;
+      turn.youHealth = charHealth;
+      turn.damage = roll;
     }
-    return {hitNotification, deadNotification, orcNotification, button, turnNotification};
   }
-};
+
+  fight(char, enemy) {
+    let count = 1;
+    let turn = {turn: count, whoTurn: char};
+    let roll = diceRoller(20, 1) + this.state.chars[char].atk;
+    if(roll >= this.state.chars[enemy].ac) {
+      turn.hit = true;
+      turn.roll = roll;
+      this.damage(char, turn);
+    } else {
+      turn.hit = false;
+      turn.roll = roll;
+    }
+    this.setState({turns: this.state.turns.concat(turn)});
+
+  }
+
+  render() {
+    return (
+      <div>
+        <Turns turns={this.state.turns} />
+        <Controls playerTurn={this.state.playerTurn} fight={this.fight} />
+      </div>
+    );
+  }
+}
