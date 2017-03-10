@@ -1,6 +1,5 @@
 import React from 'react';
-import chars from './chars';
-import Controls from './Controls.js';
+import BuildCombat from './BuildCombat.js';
 
 function App(props) {
   let charArray = [];
@@ -18,7 +17,7 @@ function App(props) {
         {stats}
       </ul>
       
-      <Controls chars={chars} />
+      <BuildCombat />
     </div>
     );
 }
