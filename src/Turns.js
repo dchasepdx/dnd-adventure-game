@@ -21,8 +21,28 @@ class Turns extends Component {
       playerTurn: true,
     };
   }
+
+  enemyHitOrMiss(turn) {
+    if(turn.hit) {
+      return (
+        <div>
+          <p>
+            The orc smacks you and does {turn.damage} damage. 
+          </p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <p>
+            The orc misses
+          </p>
+        </div>
+      );
+    }
+  }
   
-  hitOrMiss(turn) {
+  playerHitOrMiss(turn) {
     if(turn.hit) {
       return (
         <div>
@@ -45,7 +65,11 @@ class Turns extends Component {
   rollResult() {
     let turns = this.props.turns;
     let currentTurn = turns[turns.length - 1];
-    return this.hitOrMiss(currentTurn);
+    if(currentTurn.whoTurn === 'You') {
+      return this.playerHitOrMiss(currentTurn);
+    } else {
+      return this.enemyHitOrMiss(currentTurn);
+    }
   }
 
   render() {

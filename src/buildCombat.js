@@ -20,6 +20,7 @@ export default class BuildCombat extends Component {
     };
     this.fight = this.fight.bind(this);
     this.damage = this.damage.bind(this);
+    this.combatRound = this.combatRound.bind(this);
   }
 
 //keep ternary operator in mind when refactoring
@@ -55,14 +56,28 @@ export default class BuildCombat extends Component {
       turn.roll = roll;
     }
     this.setState({turns: this.state.turns.concat(turn)});
-
   }
 
+  combatRound() {
+    this.fight('You', 'Orc');
+    this.setState({orcsTurn: true});
+    setTimeout(() => {
+      this.fight('Orc', 'You');
+      console.log('orc turn', this.state.turns);
+      this.setState({orcsTurn: false});
+    }, 2000);
+  };
+
   render() {
+    let orcsTurn;
+    if(this.state.orcsTurn) {
+      orcsTurn = <h1>Orc's Turn</h1>;
+    }
     return (
       <div>
+        {orcsTurn}
         <Turns turns={this.state.turns} />
-        <Controls playerTurn={this.state.playerTurn} fight={this.fight} />
+        <Controls playerTurn={this.state.playerTurn} combatRound={this.combatRound} />
       </div>
     );
   }
