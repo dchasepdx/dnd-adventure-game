@@ -1,5 +1,5 @@
 export default {
-  You: {
+  Stan: {
     id: 'stan',
     ac: 13,
     atk: 2,
