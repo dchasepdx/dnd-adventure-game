@@ -23,9 +23,6 @@ export default class BuildCombat extends Component {
     this.combatRound = this.combatRound.bind(this);
   }
 
-//keep ternary operator in mind when refactoring
-
-
   damage(char, turn) {
     let charHealth;
     if(char === 'You') {
@@ -44,8 +41,7 @@ export default class BuildCombat extends Component {
   }
 
   fight(char, enemy) {
-    let count = 1;
-    let turn = {turn: count, whoTurn: char};
+    let turn = {whoTurn: char};
     let roll = diceRoller(20, 1) + this.state.chars[char].atk;
     if(roll >= this.state.chars[enemy].ac) {
       turn.hit = true;
@@ -55,16 +51,16 @@ export default class BuildCombat extends Component {
       turn.hit = false;
       turn.roll = roll;
     }
+    turn.turn = (this.state.turns.length + 1).toString();
     this.setState({turns: this.state.turns.concat(turn)});
   }
 
   combatRound() {
     this.fight('You', 'Orc');
-    this.setState({orcsTurn: true});
+    // this.setState({orcsTurn: true});
     setTimeout(() => {
       this.fight('Orc', 'You');
-      console.log('orc turn', this.state.turns);
-      this.setState({orcsTurn: false});
+      // this.setState({orcsTurn: false});
     }, 2000);
   };
 
