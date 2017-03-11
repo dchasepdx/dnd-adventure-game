@@ -9,7 +9,7 @@ function App(props) {
     }
   };
   const stats = charArray.map(char => {
-    return <li key={char.id}>{char.id} has {char.ac} AC and +{char.atk} to hit</li>
+    return <li key={char.id}>{char.id} has {char.ac} AC and +{char.atk} to hit</li>;
   });
   return (
     <div>

@@ -1,19 +1,5 @@
 import React, {Component} from 'react';
 
-/*function Turns(props) {
-  let hitNotification;
-  if(props.turns.roll) {
-    hitNotification = <p>You Rolled</p>;
-  }
-  
-  return (
-    <div>
-      {hitNotification}
-    </div>
-  );
-}
-export default Turns;*/
-
 class Turns extends Component {
   constructor(props) {
     super(props);
@@ -25,17 +11,17 @@ class Turns extends Component {
   enemyHitOrMiss(turn) {
     if(turn.hit) {
       return (
-        <div>
+        <div key={turn.turn}>
           <p>
-            The orc smacks you and does {turn.damage} damage. 
+            Turn {turn.turn}: The orc smacks you and does {turn.damage} damage. 
           </p>
         </div>
       );
     } else {
       return (
-        <div>
+        <div key={turn.turn}>
           <p>
-            The orc misses
+            Turn {turn.turn}: The orc misses
           </p>
         </div>
       );
@@ -45,17 +31,17 @@ class Turns extends Component {
   playerHitOrMiss(turn) {
     if(turn.hit) {
       return (
-        <div>
+        <div key={turn.turn}>
           <p>
-            You hit! You rolled a {turn.roll} and did {turn.damage} damage. 
+            Turn {turn.turn}: You hit! You rolled a {turn.roll} and did {turn.damage} damage. 
           </p>
         </div>
       );
     } else {
       return (
-        <div>
+        <div key={turn.turn}>
           <p>
-            You missed
+            Turn {turn.turn}: You missed
           </p>
         </div>
       );
@@ -73,15 +59,17 @@ class Turns extends Component {
   }
 
   render() {
-    let hitNotification = <p>A giant Orc is charging at you</p>;
 
-    if(this.props.turns.length) {
-      hitNotification = this.rollResult();
-    }
     return (
-    <div>
-      {hitNotification}
-    </div>
+      <div>
+        {this.props.turns.map(t => {
+          if(t.whoTurn === 'You') {
+            return this.playerHitOrMiss(t);
+          } else {
+            return this.enemyHitOrMiss(t);
+          }
+        })}
+      </div>
     );  
   }
 }
