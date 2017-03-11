@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import DeathCheck from './DeathCheck';
 
 class Turns extends Component {
   constructor(props) {
@@ -51,7 +52,7 @@ class Turns extends Component {
   rollResult() {
     let turns = this.props.turns;
     let currentTurn = turns[turns.length - 1];
-    if(currentTurn.whoTurn === 'You') {
+    if(currentTurn.whoTurn === 'Stan') {
       return this.playerHitOrMiss(currentTurn);
     } else {
       return this.enemyHitOrMiss(currentTurn);
@@ -59,11 +60,15 @@ class Turns extends Component {
   }
 
   render() {
-
+    let lastTurn = null;
+    if(this.props.turns) {
+      lastTurn = <DeathCheck lastTurn={this.props.turns[this.props.turns.length - 1]}/>;
+    }
     return (
       <div>
+        {lastTurn}
         {this.props.turns.map(t => {
-          if(t.whoTurn === 'You') {
+          if(t.whoTurn === 'Stan') {
             return this.playerHitOrMiss(t);
           } else {
             return this.enemyHitOrMiss(t);

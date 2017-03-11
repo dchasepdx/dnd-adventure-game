@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import diceRoller from './diceRoller';
 import Controls from './Controls';
 import Turns from './Turns';
+import DeathCheck from './DeathCheck';
 import chars from './chars';
 
 export default class BuildCombat extends Component {
@@ -11,11 +12,11 @@ export default class BuildCombat extends Component {
       chars: chars,
       hit: false,
       roll: null,
-      dead: false,
-      youHealth: chars.You.health,
+      youHealth: chars.Stan.health,
       enemyHealth: chars.Orc.health,
       damage: null,
       playerTurn: 'init',
+      deathCheck: false,
       turns: []
     };
     this.fight = this.fight.bind(this);
@@ -25,18 +26,29 @@ export default class BuildCombat extends Component {
 
   damage(char, turn) {
     let charHealth;
-    if(char === 'You') {
+    if(char === 'Stan') {
       charHealth = this.state.enemyHealth;
       let roll = diceRoller(6, 1) + this.state.chars[char].atk;
       charHealth -= roll;
       turn.enemyHealth = charHealth;
       turn.damage = roll;
+      if(turn.enemyHealth > 0) {
+        this.setState({enemyHealth: charHealth});
+      } else {
+        this.setState({enemyHealth: charHealth, deathCheck: true});
+      }
+
     } else {
       charHealth = this.state.youHealth;
       let roll = diceRoller(6, 1) + this.state.chars[char].atk;
       charHealth -= roll;
       turn.youHealth = charHealth;
       turn.damage = roll;
+      if(turn.youHealth > 0) {
+        this.setState({youHealth: charHealth});
+      } else {
+        this.setState({youHealth: charHealth, deathCheck: true});
+      }
     }
   }
 
@@ -56,10 +68,13 @@ export default class BuildCombat extends Component {
   }
 
   combatRound() {
-    this.fight('You', 'Orc');
+    this.fight('Stan', 'Orc');
     // this.setState({orcsTurn: true});
     setTimeout(() => {
-      this.fight('Orc', 'You');
+      if(this.state.deathCheck) {
+        return;
+      }
+      this.fight('Orc', 'Stan');
       // this.setState({orcsTurn: false});
     }, 2000);
   };
@@ -72,7 +87,12 @@ export default class BuildCombat extends Component {
     return (
       <div>
         {orcsTurn}
-        <Turns turns={this.state.turns} />
+        {/*!this.state.deathCheck &&*/ 
+          <Turns turns={this.state.turns} />
+        }
+        {this.state.deathCheck &&
+          <DeathCheck turns={this.state.turns} />
+        }
         <Controls playerTurn={this.state.playerTurn} combatRound={this.combatRound} />
       </div>
     );
