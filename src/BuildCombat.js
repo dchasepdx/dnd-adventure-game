@@ -35,7 +35,10 @@ export default class BuildCombat extends Component {
       if(turn.enemyHealth > 0) {
         this.setState({enemyHealth: charHealth});
       } else {
-        this.setState({enemyHealth: charHealth, deathCheck: true});
+        this.setState({enemyHealth: charHealth, deathCheck: true, orcsTurn: false}, () => {
+          clearTimeout(this.enemyTurnTimer);
+          clearTimeout(this.enemyTimer);
+        });
       }
 
     } else {
@@ -47,7 +50,10 @@ export default class BuildCombat extends Component {
       if(turn.youHealth > 0) {
         this.setState({youHealth: charHealth});
       } else {
-        this.setState({youHealth: charHealth, deathCheck: true});
+        this.setState({youHealth: charHealth, deathCheck: true}, () => {
+          clearTimeout(this.enemyTurnTimer);
+          clearTimeout(this.enemyTimer);
+        });
       }
     }
   }
@@ -69,31 +75,31 @@ export default class BuildCombat extends Component {
 
   combatRound() {
     this.fight('Stan', 'Orc');
+    this.enemyTurnTimer = setTimeout(() => {
+      this.setState({orcsTurn: true});
+    }, 500);
     // this.setState({orcsTurn: true});
-    setTimeout(() => {
-      if(this.state.deathCheck) {
-        return;
-      }
+    this.enemyTimer = setTimeout(() => {
       this.fight('Orc', 'Stan');
-      // this.setState({orcsTurn: false});
+      this.setState({orcsTurn: false});
     }, 2000);
   };
 
   render() {
-    let orcsTurn;
-    if(this.state.orcsTurn) {
-      orcsTurn = <h1>Orc's Turn</h1>;
-    }
     return (
-      <div>
-        {orcsTurn}
-        {/*!this.state.deathCheck &&*/ 
-          <Turns turns={this.state.turns} />
-        }
+      <div> 
+        <Turns turns={this.state.turns} />
         {this.state.deathCheck &&
           <DeathCheck turns={this.state.turns} />
         }
-        <Controls playerTurn={this.state.playerTurn} combatRound={this.combatRound} />
+        {this.state.orcsTurn && 
+          <p>Enemy's turn</p>
+        }
+        <Controls 
+          orcsTurn={this.state.orcsTurn} 
+          playerTurn={this.state.playerTurn} 
+          combatRound={this.combatRound} 
+        />
       </div>
     );
   }
