@@ -17,6 +17,7 @@ export default class BuildCombat extends Component {
       damage: null,
       playerTurn: 'init',
       deathCheck: false,
+      combatOver: false,
       turns: []
     };
     this.fight = this.fight.bind(this);
@@ -35,7 +36,7 @@ export default class BuildCombat extends Component {
       if(turn.enemyHealth > 0) {
         this.setState({enemyHealth: charHealth});
       } else {
-        this.setState({enemyHealth: charHealth, deathCheck: true, orcsTurn: false}, () => {
+        this.setState({enemyHealth: charHealth, deathCheck: true, orcsTurn: false, combatOver: true}, () => {
           clearTimeout(this.enemyTurnTimer);
           clearTimeout(this.enemyTimer);
         });
@@ -50,7 +51,7 @@ export default class BuildCombat extends Component {
       if(turn.youHealth > 0) {
         this.setState({youHealth: charHealth});
       } else {
-        this.setState({youHealth: charHealth, deathCheck: true}, () => {
+        this.setState({youHealth: charHealth, deathCheck: true, combatOver: true}, () => {
           clearTimeout(this.enemyTurnTimer);
           clearTimeout(this.enemyTimer);
         });
@@ -95,11 +96,12 @@ export default class BuildCombat extends Component {
         {this.state.orcsTurn && 
           <p>Enemy's turn</p>
         }
-        <Controls 
-          orcsTurn={this.state.orcsTurn} 
-          playerTurn={this.state.playerTurn} 
-          combatRound={this.combatRound} 
-        />
+        {!this.state.combatOver &&
+          <Controls 
+            orcsTurn={this.state.orcsTurn} 
+            combatRound={this.combatRound} 
+          />
+        }
       </div>
     );
   }
