@@ -6,6 +6,9 @@ export default function Controls(props) {
     {!props.orcsTurn && 
       <button onClick={props.combatRound}>fight!</button>
     }
+    {!props.orcsTurn && 
+      <button onClick={props.backToPrevRoom}>Run Away!</button>
+    }
   </div>
   );
 }
