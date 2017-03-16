@@ -98,6 +98,8 @@ export default class BuildCombat extends Component {
         }
         {!this.state.combatOver &&
           <Controls 
+            prevRoom={this.props.prevRoom}
+            backToPrevRoom={this.props.backToPrevRoom}
             orcsTurn={this.state.orcsTurn} 
             combatRound={this.combatRound} 
           />
