@@ -6,7 +6,10 @@ import App from './components/App';
 import adventureReducer from './reducer';
 // import chars from './chars';
 
-let store = createStore(adventureReducer);
+let store = createStore(
+  adventureReducer, 
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDOM.render(
   <Provider store={store}>

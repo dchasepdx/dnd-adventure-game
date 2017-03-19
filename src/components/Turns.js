@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
 import DeathCheck from './DeathCheck';
+import {connect} from 'react-redux';
+
+const mapStateToProps = state => ({
+  turns: state.turns
+});
 
 class Turns extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      playerTurn: true,
-    };
-  }
 
   enemyHitOrMiss(turn) {
-    if(turn.hit) {
+    if (turn.hit) {
       return (
         <div key={turn.turn}>
           <p>
@@ -30,7 +29,7 @@ class Turns extends Component {
   }
   
   playerHitOrMiss(turn) {
-    if(turn.hit) {
+    if (turn.hit) {
       return (
         <div key={turn.turn}>
           <p>
@@ -52,7 +51,7 @@ class Turns extends Component {
   rollResult() {
     let turns = this.props.turns;
     let currentTurn = turns[turns.length - 1];
-    if(currentTurn.whoTurn === 'Stan') {
+    if (currentTurn.whoTurn === 'Stan') {
       return this.playerHitOrMiss(currentTurn);
     } else {
       return this.enemyHitOrMiss(currentTurn);
@@ -60,15 +59,15 @@ class Turns extends Component {
   }
 
   render() {
-    let lastTurn = null;
-    if(this.props.turns) {
-      lastTurn = <DeathCheck lastTurn={this.props.turns[this.props.turns.length - 1]}/>;
-    }
+    // let lastTurn = null;
+    // if (this.props.turns) {
+    //   lastTurn = <DeathCheck lastTurn={this.props.turns[this.props.turns.length - 1]}/>;
+    // }
     return (
       <div>
-        {lastTurn}
+        {/*{lastTurn}*/}
         {this.props.turns.map(t => {
-          if(t.whoTurn === 'Stan') {
+          if (t.whoTurn === 'Stan') {
             return this.playerHitOrMiss(t);
           } else {
             return this.enemyHitOrMiss(t);
@@ -79,4 +78,4 @@ class Turns extends Component {
   }
 }
 
-export default Turns;
+export default connect(mapStateToProps)(Turns);

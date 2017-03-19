@@ -4,13 +4,16 @@ import BuildCombat from './BuildCombat.js';
 import CurrentRoom from './CurrentRoom';
 import RoomNavigation from './RoomNavigation';
 import {connect} from 'react-redux';
-import {setCurrentRoom, backToPrevRoom} from '../reducer';
+import {setCurrentRoom, backToPrevRoom, roomNavError} from '../reducer';
 
-const mapStateToProps = (state) => ({
-  currentRoom: state.currentRoom,
-  prevRoom: null,
-  navError: null,
-});
+const mapStateToProps = (state) => {
+  return ({
+    currentRoom: state.currentRoom,
+    prevRoom: state.prevRoom,
+    navError: state.navError,
+  }
+  );
+};
 
 class App extends Component {
   constructor(props) {
@@ -26,9 +29,10 @@ class App extends Component {
 
   updateCurrentRoom(e) {
     e.preventDefault();
+    console.log(e.target.value);
     if (!e.target.value) {
-      
-      this.setState({navError: true});
+      this.props.dispatch(roomNavError());
+      // this.setState({navError: true});
     } else {
       this.props.dispatch(setCurrentRoom(e.target.value));
     }
