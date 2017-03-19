@@ -1,6 +1,12 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
-export default function Controls(props) {
+const mapstateToProps = state => ({
+  orcsTurn: state.orcsTurn
+});
+
+
+function Controls(props) {
   return (
   <div>
     {!props.orcsTurn && 
@@ -12,3 +18,4 @@ export default function Controls(props) {
   </div>
   );
 }
+export default connect(mapstateToProps)(Controls);

@@ -3,66 +3,72 @@ import diceRoller from './diceRoller';
 import Controls from './Controls';
 import Turns from './Turns';
 import DeathCheck from './DeathCheck';
-import chars from './chars';
+import {connect} from 'react-redux';
 
-export default class BuildCombat extends Component {
+import {setEnemyHealth, setPlayerHealth, updateTurns, orcsTurn} from '../reducer';
+
+const mapStateToProps = state => ({
+  enemyHealth: state.enemyHealth,
+  youHealth: state.youHealth,
+  turns: state.turns,
+  chars: state.chars,
+  orcsTurn: state.orcsTurn,
+  deathCheck: state.deathCheck,
+  combatOver: state.combatOver
+
+});
+
+class BuildCombat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chars: chars,
-      hit: false,
-      roll: null,
-      youHealth: chars.Stan.health,
-      enemyHealth: chars.Orc.health,
-      damage: null,
-      playerTurn: 'init',
-      deathCheck: false,
-      combatOver: false,
-      turns: []
     };
+
     this.fight = this.fight.bind(this);
     this.damage = this.damage.bind(this);
     this.combatRound = this.combatRound.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps && nextProps.combatOver) {
+      console.log('clearing timers');
+      clearTimeout(this.enemyTimer);
+      clearTimeout(this.enemyTurnTimer);
+    }
+  }
+
   damage(char, turn) {
     let charHealth;
-    if(char === 'Stan') {
-      charHealth = this.state.enemyHealth;
-      let roll = diceRoller(6, 1) + this.state.chars[char].atk;
+    if (char === 'Stan') {
+      charHealth = this.props.enemyHealth;
+      let roll = diceRoller(6, 1) + this.props.chars[char].atk;
       charHealth -= roll;
       turn.enemyHealth = charHealth;
       turn.damage = roll;
-      if(turn.enemyHealth > 0) {
-        this.setState({enemyHealth: charHealth});
+      if (turn.enemyHealth > 0) {
+        this.props.dispatch(setEnemyHealth(charHealth));
       } else {
-        this.setState({enemyHealth: charHealth, deathCheck: true, orcsTurn: false, combatOver: true}, () => {
-          clearTimeout(this.enemyTurnTimer);
-          clearTimeout(this.enemyTimer);
-        });
+        this.props.dispatch(setEnemyHealth(charHealth, {deathCheck: true, orcsTurn: false, combatOver: true}));
       }
 
     } else {
-      charHealth = this.state.youHealth;
-      let roll = diceRoller(6, 1) + this.state.chars[char].atk;
+      charHealth = this.props.youHealth;
+      let roll = diceRoller(6, 1) + this.props.chars[char].atk;
       charHealth -= roll;
       turn.youHealth = charHealth;
       turn.damage = roll;
-      if(turn.youHealth > 0) {
-        this.setState({youHealth: charHealth});
+      if (turn.youHealth > 0) {
+        this.props.dispatch(setPlayerHealth(charHealth));
       } else {
-        this.setState({youHealth: charHealth, deathCheck: true, combatOver: true}, () => {
-          clearTimeout(this.enemyTurnTimer);
-          clearTimeout(this.enemyTimer);
-        });
+        this.props.dispatch(setPlayerHealth(charHealth, {deathCheck: true, orcsTurn: false, combatOver: true}));
       }
     }
   }
 
   fight(char, enemy) {
     let turn = {whoTurn: char};
-    let roll = diceRoller(20, 1) + this.state.chars[char].atk;
-    if(roll >= this.state.chars[enemy].ac) {
+    let roll = diceRoller(20, 1) + this.props.chars[char].atk;
+    if (roll >= this.props.chars[enemy].ac) {
       turn.hit = true;
       turn.roll = roll;
       this.damage(char, turn);
@@ -70,37 +76,39 @@ export default class BuildCombat extends Component {
       turn.hit = false;
       turn.roll = roll;
     }
-    turn.turn = (this.state.turns.length + 1).toString();
-    this.setState({turns: this.state.turns.concat(turn)});
+    turn.turn = (this.props.turns.length + 1).toString();
+    this.props.dispatch(updateTurns(turn));
   }
 
   combatRound() {
     this.fight('Stan', 'Orc');
     this.enemyTurnTimer = setTimeout(() => {
-      this.setState({orcsTurn: true});
+      this.props.dispatch(orcsTurn());
     }, 500);
-    // this.setState({orcsTurn: true});
     this.enemyTimer = setTimeout(() => {
       this.fight('Orc', 'Stan');
-      this.setState({orcsTurn: false});
+      this.props.dispatch(orcsTurn());
     }, 2000);
   };
 
   render() {
     return (
       <div> 
-        <Turns turns={this.state.turns} />
-        {this.state.deathCheck &&
-          <DeathCheck turns={this.state.turns} />
+        <Turns  />
+
+        {this.props.deathCheck && 
+          <DeathCheck />
         }
-        {this.state.orcsTurn && 
+
+        {this.props.orcsTurn && 
           <p>Enemy's turn</p>
         }
-        {!this.state.combatOver &&
+
+        {!this.props.combatOver &&
           <Controls 
             prevRoom={this.props.prevRoom}
             backToPrevRoom={this.props.backToPrevRoom}
-            orcsTurn={this.state.orcsTurn} 
+            orcsTurn={this.props.orcsTurn} 
             combatRound={this.combatRound} 
           />
         }
@@ -108,3 +116,4 @@ export default class BuildCombat extends Component {
     );
   }
 }
+export default connect(mapStateToProps)(BuildCombat);
