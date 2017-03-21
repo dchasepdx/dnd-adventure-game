@@ -10,7 +10,7 @@ export default {
     id: 'orc',
     ac: 10,
     atk: 1,
-    health: 6
+    health: 10
   }
 };
 
