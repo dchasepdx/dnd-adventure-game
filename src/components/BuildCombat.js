@@ -5,7 +5,12 @@ import Turns from './Turns';
 import DeathCheck from './DeathCheck';
 import {connect} from 'react-redux';
 
-import {setEnemyHealth, setPlayerHealth, updateTurns, orcsTurn} from '../reducer';
+import {setEnemyHealth, 
+        setPlayerHealth, 
+        updateTurns, 
+        orcsTurn,
+
+       } from '../reducer';
 
 const mapStateToProps = state => ({
   enemyHealth: state.enemyHealth,
@@ -14,7 +19,8 @@ const mapStateToProps = state => ({
   chars: state.chars,
   orcsTurn: state.orcsTurn,
   deathCheck: state.deathCheck,
-  combatOver: state.combatOver
+  combatOver: state.combatOver,
+  currentRoom: state.currentRoom
 
 });
 
@@ -31,7 +37,6 @@ class BuildCombat extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props !== nextProps && nextProps.combatOver) {
-      console.log('clearing timers');
       clearTimeout(this.enemyTimer);
       clearTimeout(this.enemyTurnTimer);
     }
@@ -48,7 +53,7 @@ class BuildCombat extends Component {
       if (turn.enemyHealth > 0) {
         this.props.dispatch(setEnemyHealth(charHealth));
       } else {
-        this.props.dispatch(setEnemyHealth(charHealth, {deathCheck: true, orcsTurn: false, combatOver: true}));
+        this.props.dispatch(setEnemyHealth(charHealth, {orcDead: true, deathCheck: true, orcsTurn: false, combatOver: true}));
       }
 
     } else {
@@ -60,7 +65,7 @@ class BuildCombat extends Component {
       if (turn.youHealth > 0) {
         this.props.dispatch(setPlayerHealth(charHealth));
       } else {
-        this.props.dispatch(setPlayerHealth(charHealth, {deathCheck: true, orcsTurn: false, combatOver: true}));
+        this.props.dispatch(setPlayerHealth(charHealth, {playerDead: true, deathCheck: true, orcsTurn: false, combatOver: true}));
       }
     }
   }
@@ -86,8 +91,8 @@ class BuildCombat extends Component {
       this.props.dispatch(orcsTurn());
     }, 500);
     this.enemyTimer = setTimeout(() => {
-      this.fight('Orc', 'Stan');
       this.props.dispatch(orcsTurn());
+      this.fight('Orc', 'Stan');
     }, 2000);
   };
 
@@ -104,14 +109,13 @@ class BuildCombat extends Component {
           <p>Enemy's turn</p>
         }
 
-        {!this.props.combatOver &&
           <Controls 
             prevRoom={this.props.prevRoom}
             backToPrevRoom={this.props.backToPrevRoom}
             orcsTurn={this.props.orcsTurn} 
             combatRound={this.combatRound} 
+            updateCurrentRoom={this.props.updateCurrentRoom}
           />
-        }
       </div>
     );
   }

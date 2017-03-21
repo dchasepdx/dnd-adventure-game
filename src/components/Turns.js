@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import DeathCheck from './DeathCheck';
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => ({
@@ -59,13 +58,8 @@ class Turns extends Component {
   }
 
   render() {
-    // let lastTurn = null;
-    // if (this.props.turns) {
-    //   lastTurn = <DeathCheck lastTurn={this.props.turns[this.props.turns.length - 1]}/>;
-    // }
     return (
       <div>
-        {/*{lastTurn}*/}
         {this.props.turns.map(t => {
           if (t.whoTurn === 'Stan') {
             return this.playerHitOrMiss(t);

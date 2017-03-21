@@ -6,14 +6,12 @@ const initialState = {
   prevRoom: null,
   navError: null,
   chars: chars,
-  // hit: false,
-  // roll: null,
   youHealth: chars.Stan.health,
   enemyHealth: chars.Orc.health,
-  // damage: null,
-  // playerTurn: 'init',
   orcsTurn: false,
   deathCheck: false,
+  orcDead: false,
+  playerDead: false,
   combatOver: false,
   turns: []
 };
@@ -26,6 +24,11 @@ const SET_PLAYER_HEALTH = 'SET_PLAYER_HEALTH';
 const UPDATE_TURNS = 'UPDATE_TURNS';
 const ORCS_TURN = 'ORCS_TURN';
 const DEATH_CHECK = 'DEATH_CHECK';
+const RESET_STATE = 'RESET_STATE';
+
+export const resetState = () => ({
+  type: RESET_STATE
+});
 
 export const deathCheck = () => ({
   type: DEATH_CHECK
@@ -76,6 +79,7 @@ function updateObject(state, newValues, optionalValues = null) {
 export default function adventureReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CURRENT_ROOM:
+      console.log(action.payload);
       return updateObject(
         state, 
         {
@@ -106,6 +110,23 @@ export default function adventureReducer(state = initialState, action) {
       return {
         ...state,
         orcsTurn: !state.orcsTurn
+      };
+
+    case RESET_STATE:
+      return {
+        ...state,
+        currentRoom: adventureZones[1],
+        prevRoom: null,
+        navError: null,
+        chars: chars,
+        youHealth: chars.Stan.health,
+        enemyHealth: chars.Orc.health,
+        orcsTurn: false,
+        deathCheck: false,
+        orcDead: false,
+        playerDead: false,
+        combatOver: false,
+        turns: []
       };
 
     default:
