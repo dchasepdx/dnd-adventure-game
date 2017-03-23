@@ -1,0 +1,10 @@
+body {
+  background-color: #CCCBC7
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  color: #06446D;
+  width: 100%;
+}

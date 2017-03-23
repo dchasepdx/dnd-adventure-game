@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import {buttonStyles, divStyleFlex} from '../styles';
 
 const mapStateToProps = state => ({
   orcDead: state.orcDead
@@ -7,15 +8,16 @@ const mapStateToProps = state => ({
 
 class RoomNavigation extends Component {
   render() {
-    let win = <button value={'win'} onClick={this.props.updateCurrentRoom}>You Win! Reset Game</button>;
+    
+    let win = <button style={buttonStyles} value={'win'} onClick={this.props.updateCurrentRoom}>You Win! Reset Game</button>;
     let nav = (
-              <div>
-                <button value={this.props.currentRoom.n} onClick={this.props.updateCurrentRoom}>North</button>
-                <button value={this.props.currentRoom.s} onClick={this.props.updateCurrentRoom}>South</button>
+              <div style={divStyleFlex}>
+                <button style={buttonStyles} value={this.props.currentRoom.n} onClick={this.props.updateCurrentRoom}>North</button>
+                <button style={buttonStyles} value={this.props.currentRoom.s} onClick={this.props.updateCurrentRoom}>South</button>
               </div>
               );
     return (
-      <div>
+      <div style={divStyleFlex}>
         {this.props.currentRoom.treasure ? win : nav}
       </div>
     );

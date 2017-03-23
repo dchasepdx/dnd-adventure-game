@@ -5,12 +5,13 @@ import Turns from './Turns';
 import DeathCheck from './DeathCheck';
 import {connect} from 'react-redux';
 
-import {setEnemyHealth, 
+import {
+        setEnemyHealth, 
         setPlayerHealth, 
         updateTurns, 
         orcsTurn,
 
-       } from '../reducer';
+       } from '../actions';
 
 const mapStateToProps = state => ({
   enemyHealth: state.enemyHealth,

@@ -4,7 +4,8 @@ import BuildCombat from './BuildCombat.js';
 import CurrentRoom from './CurrentRoom';
 import RoomNavigation from './RoomNavigation';
 import {connect} from 'react-redux';
-import {setCurrentRoom, backToPrevRoom, roomNavError, resetState} from '../reducer';
+import {setCurrentRoom, backToPrevRoom, roomNavError, resetState} from '../actions';
+import {divStyle} from '../styles';
 
 const mapStateToProps = (state) => {
   return ({
@@ -41,8 +42,9 @@ class App extends Component {
   }
 
   render() {
+
     return (
-      <div>
+      <div style={divStyle}>
         {this.props.navError && 
           <p>You can't go that way</p>
         }

@@ -4,6 +4,8 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import App from './components/App';
 import adventureReducer from './reducer';
+import './app.css';
+import 'normalize.css';
 // import chars from './chars';
 
 let store = createStore(
