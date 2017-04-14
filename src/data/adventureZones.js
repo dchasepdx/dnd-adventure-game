@@ -3,7 +3,9 @@ const adventureZones =  [];
   
 adventureZones[0] = {
   enemy: chars.Orc,
-  init: 'You approach a cave with bones strewn about the entrance. A giant orc charges you.',
+  init: 'You approach a cave with bones strewn about the entrance.',
+  aliveEnemy: 'A giant orc charges you',
+  deadEnemy: 'A dead orc lies before you',
   id: 'orc lair',
   n: 1, //leads to meadow
   win: 2 //leads to cave

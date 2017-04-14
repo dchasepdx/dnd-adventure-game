@@ -9,7 +9,12 @@ export const buttonStyles = {
 };
 
 export const divStyle = {
-  margin: 'auto',
+  
+};
+
+export const divStyleFlexRoot = {
+  display: 'flex',
+  justifyContent: 'center',
 };
 
 export const divStyleFlex = {
@@ -17,5 +22,18 @@ export const divStyleFlex = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+};
+
+export const divStyleFlexCol = {
+  margin: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+export const oneThird = {
+  gridColumn: '1/3',
+  gridRow: '1'
 };
 

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {} from '../styles';
 
 const mapStateToProps = state => ({
   turns: state.turns
@@ -40,7 +41,7 @@ class Turns extends Component {
       return (
         <div key={turn.turn}>
           <p>
-            Turn {turn.turn}: You missed
+            Turn {turn.turn}: You rolled a {turn.roll}. You missed
           </p>
         </div>
       );

@@ -3,9 +3,12 @@ import BuildCombat from './BuildCombat.js';
 // import adventureZones from './adventureZones';
 import CurrentRoom from './CurrentRoom';
 import RoomNavigation from './RoomNavigation';
+import CharStats from './CharStats';
+import SomeContent from './SomeContent';
+
 import {connect} from 'react-redux';
 import {setCurrentRoom, backToPrevRoom, roomNavError, resetState} from '../actions';
-import {divStyle} from '../styles';
+import {divStyleFlex, oneThird} from '../styles';
 
 const mapStateToProps = (state) => {
   return ({
@@ -44,9 +47,9 @@ class App extends Component {
   render() {
 
     return (
-      <div style={divStyle}>
+      <div style={{maxWidth: 940, margin: '0 auto'}}>
         {this.props.navError && 
-          <p>You can't go that way</p>
+          <div style={divStyleFlex}><p>You can't go that way</p></div>
         }
         <CurrentRoom 
           currentRoom={this.props.currentRoom}
@@ -59,12 +62,19 @@ class App extends Component {
             updateCurrentRoom={this.updateCurrentRoom}
           />
         }
+        <div className='grid'>
+          <CharStats style={oneThird} />
+          <SomeContent>
+
         {!this.props.currentRoom.enemy &&
           <RoomNavigation 
           currentRoom={this.props.currentRoom}
           updateCurrentRoom={this.updateCurrentRoom}
         />
         }
+          </SomeContent>
+          <SomeContent />
+        </div>
       </div>
     );
 
