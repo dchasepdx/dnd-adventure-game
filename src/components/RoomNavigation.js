@@ -17,7 +17,7 @@ class RoomNavigation extends Component {
               </div>
               );
     return (
-      <div style={divStyleFlex}>
+      <div className='col-1-3' style={divStyleFlex}>
         {this.props.currentRoom.treasure ? win : nav}
       </div>
     );

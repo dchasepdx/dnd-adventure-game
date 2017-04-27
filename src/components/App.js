@@ -4,19 +4,25 @@ import BuildCombat from './BuildCombat.js';
 import CurrentRoom from './CurrentRoom';
 import RoomNavigation from './RoomNavigation';
 import CharStats from './CharStats';
-import SomeContent from './SomeContent';
+import DeathCheck from './DeathCheck';
+// import SomeContent from './SomeContent';
+import Turns from './Turns';
 
-import {connect} from 'react-redux';
-import {setCurrentRoom, backToPrevRoom, roomNavError, resetState} from '../actions';
-import {divStyleFlex, oneThird} from '../styles';
+import { connect } from 'react-redux';
+import {
+  setCurrentRoom,
+  backToPrevRoom,
+  roomNavError,
+  resetState
+} from '../actions';
+import { divStyleFlex, oneThird } from '../styles';
 
-const mapStateToProps = (state) => {
-  return ({
+const mapStateToProps = state => {
+  return {
     currentRoom: state.currentRoom,
     prevRoom: state.prevRoom,
-    navError: state.navError,
-  }
-  );
+    navError: state.navError
+  };
 };
 
 class App extends Component {
@@ -45,39 +51,30 @@ class App extends Component {
   }
 
   render() {
-
     return (
-      <div style={{maxWidth: 940, margin: '0 auto'}}>
-        {this.props.navError && 
-          <div style={divStyleFlex}><p>You can't go that way</p></div>
-        }
-        <CurrentRoom 
-          currentRoom={this.props.currentRoom}
-        />
-    
-        {this.props.currentRoom.enemy &&
-          <BuildCombat 
-            prevRoom={this.props.prevRoom}
-            backToPrevRoom={this.backToPrevRoom}
-            updateCurrentRoom={this.updateCurrentRoom}
-          />
-        }
-        <div className='grid'>
-          <CharStats style={oneThird} />
-          <SomeContent>
+      <div style={{ maxWidth: 940, margin: '0 auto' }}>
+        {this.props.navError &&
+          <div style={divStyleFlex}><p>You can't go that way</p></div>}
+        <CurrentRoom currentRoom={this.props.currentRoom} />
 
-        {!this.props.currentRoom.enemy &&
-          <RoomNavigation 
-          currentRoom={this.props.currentRoom}
-          updateCurrentRoom={this.updateCurrentRoom}
-        />
-        }
-          </SomeContent>
-          <SomeContent />
+        <div className="grid grid-pad">
+          <CharStats style={oneThird} />
+          <Turns />
+          {this.props.deathCheck && <DeathCheck />}
+          {!this.props.currentRoom.enemy &&
+            <RoomNavigation
+              currentRoom={this.props.currentRoom}
+              updateCurrentRoom={this.updateCurrentRoom}
+            />}
+          {this.props.currentRoom.enemy &&
+            <BuildCombat
+              prevRoom={this.props.prevRoom}
+              backToPrevRoom={this.backToPrevRoom}
+              updateCurrentRoom={this.updateCurrentRoom}
+            />}
         </div>
       </div>
     );
-
   }
 }
 

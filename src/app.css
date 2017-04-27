@@ -4,11 +4,16 @@ body {
 
 [class*='col-'] {
   padding-right: 20px;
+  float: left;
+  min-height: 1px;
+  max-height: 202px;
+  overflow: scroll;
 }
 
 [class*='col-']:last-of-type {
   padding-right: 0;
 }
+
 
 *, *:after, *:before {
   -webkit-box-sizing: border-box;
@@ -16,12 +21,16 @@ body {
   box-sizing: border-box;
 }
 
-.grid {
-  width: 100%;
+.grid-pad {
+  padding: 20px 0 20px 20px;
 }
 
-[class*='col-'] {
-  float: left;
+.grid-pad > [class*='col-']:last-of-type {
+  padding-right: 20px;
+}
+
+.grid {
+  width: 100%;
 }
 .col-1-3 {
   width: 33.33%;

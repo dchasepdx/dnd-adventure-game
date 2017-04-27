@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import diceRoller from './diceRoller';
 import Controls from './Controls';
-import Turns from './Turns';
-import DeathCheck from './DeathCheck';
 import {connect} from 'react-redux';
 
 import {
@@ -100,11 +98,7 @@ class BuildCombat extends Component {
   render() {
     return (
       <div> 
-        <Turns  />
-
-        {this.props.deathCheck && 
-          <DeathCheck />
-        }
+        {/*<Turns  />*/}
 
         {this.props.orcsTurn && 
           <p>Enemy's turn</p>

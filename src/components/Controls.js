@@ -14,7 +14,7 @@ const mapstateToProps = state => ({
 
 function Controls(props) {
   return (
-  <div style={divStyleFlex}>
+  <div className='col-1-3' style={divStyleFlex}>
     {(!props.orcsTurn && !props.combatOver) &&
       <button style={buttonStyles} onClick={props.combatRound}>fight!</button>
     }
