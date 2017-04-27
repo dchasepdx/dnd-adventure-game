@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
 import diceRoller from './diceRoller';
 import Controls from './Controls';
-import Turns from './Turns';
-import DeathCheck from './DeathCheck';
 import {connect} from 'react-redux';
 
-import {setEnemyHealth, 
+import {
+        setEnemyHealth, 
         setPlayerHealth, 
         updateTurns, 
         orcsTurn,
 
-       } from '../reducer';
+       } from '../actions';
 
 const mapStateToProps = state => ({
   enemyHealth: state.enemyHealth,
@@ -99,11 +98,7 @@ class BuildCombat extends Component {
   render() {
     return (
       <div> 
-        <Turns  />
-
-        {this.props.deathCheck && 
-          <DeathCheck />
-        }
+        {/*<Turns  />*/}
 
         {this.props.orcsTurn && 
           <p>Enemy's turn</p>

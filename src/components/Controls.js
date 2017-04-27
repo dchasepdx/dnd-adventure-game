@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {resetState} from '../reducer';
+import {resetState} from '../actions';
+import {buttonStyles, divStyleFlex} from '../styles';
 
 const mapstateToProps = state => ({
   orcsTurn: state.orcsTurn,
@@ -13,21 +14,21 @@ const mapstateToProps = state => ({
 
 function Controls(props) {
   return (
-  <div>
+  <div className='col-1-3' style={divStyleFlex}>
     {(!props.orcsTurn && !props.combatOver) &&
-      <button onClick={props.combatRound}>fight!</button>
+      <button style={buttonStyles} onClick={props.combatRound}>fight!</button>
     }
 
     {(!props.orcsTurn && !props.combatOver) &&
-      <button onClick={props.backToPrevRoom}>Run Away!</button>
+      <button style={buttonStyles} onClick={props.backToPrevRoom}>Run Away!</button>
     }
 
     {(props.combatOver && props.orcDead) &&
-      <button value={props.currentRoom.win} onClick={props.updateCurrentRoom}>next</button>
+      <button style={buttonStyles} value={props.currentRoom.win} onClick={props.updateCurrentRoom}>next</button>
     }
 
     {(props.combatOver && props.playerDead) && 
-      <button onClick={() => props.dispatch(resetState())}>Restart</button>
+      <button style={buttonStyles} onClick={() => props.dispatch(resetState())}>Restart</button>
     }
   </div>
   );

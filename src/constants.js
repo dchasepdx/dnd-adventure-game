@@ -1,0 +1,9 @@
+export const SET_CURRENT_ROOM = 'SET_CURRENT_ROOM';
+export const BACK_TO_PREV_ROOM = 'BACK_TO_PREV_ROOM';
+export const ROOM_NAV_ERROR = 'ROOM NAV ROOM_NAV_ERROR';
+export const SET_ENEMY_HEALTH = 'SET_ENEMY_HEALTH';
+export const SET_PLAYER_HEALTH = 'SET_PLAYER_HEALTH';
+export const UPDATE_TURNS = 'UPDATE_TURNS';
+export const ORCS_TURN = 'ORCS_TURN';
+export const DEATH_CHECK = 'DEATH_CHECK';
+export const RESET_STATE = 'RESET_STATE';
