@@ -13,23 +13,29 @@ const mapstateToProps = state => ({
 
 
 function Controls(props) {
+  /*let win = <button style={buttonStyles} value={'win'} onClick={this.props.updateCurrentRoom}>You Win! Reset Game</button>;
+  let nav = (
+            <div>
+              <button style={buttonStyles} value={this.props.currentRoom.n} onClick={this.props.updateCurrentRoom}>North</button>
+              <button style={buttonStyles} value={this.props.currentRoom.s} onClick={this.props.updateCurrentRoom}>South</button>
+            </div>
+            );*/
   return (
   <div className='col-1-3' style={divStyleFlex}>
     {(!props.orcsTurn && !props.combatOver) &&
-      <button style={buttonStyles} onClick={props.combatRound}>fight!</button>
-    }
-
-    {(!props.orcsTurn && !props.combatOver) &&
-      <button style={buttonStyles} onClick={props.backToPrevRoom}>Run Away!</button>
+      <div>
+        <button style={buttonStyles} onClick={props.combatRound}>fight!</button>
+        <button style={buttonStyles} onClick={props.backToPrevRoom}>Run Away!</button>
+      </div>
     }
 
     {(props.combatOver && props.orcDead) &&
-      <button style={buttonStyles} value={props.currentRoom.win} onClick={props.updateCurrentRoom}>next</button>
+        <button style={buttonStyles} value={props.currentRoom.win} onClick={props.updateCurrentRoom}>next</button>
     }
-
     {(props.combatOver && props.playerDead) && 
       <button style={buttonStyles} onClick={() => props.dispatch(resetState())}>Restart</button>
     }
+
   </div>
   );
 }

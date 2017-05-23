@@ -21,7 +21,8 @@ const mapStateToProps = state => {
   return {
     currentRoom: state.currentRoom,
     prevRoom: state.prevRoom,
-    navError: state.navError
+    navError: state.navError,
+    deathCheck: state.deathCheck
   };
 };
 

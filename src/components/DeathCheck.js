@@ -10,7 +10,7 @@ class DeathCheck extends Component {
     let lastTurn;
     let deathNotice;
     if (this.props.turns.length) {
-      lastTurn = this.props.turns[this.props.turns.length - 1];
+      lastTurn = this.props.turns[0];
       deathNotice = <p>Turn {lastTurn.turn}: {lastTurn.whoTurn} is victorious!</p>;
     }
     return (
