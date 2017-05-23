@@ -53,6 +53,7 @@ class Turns extends Component {
   //     return this.enemyHitOrMiss(currentTurn);
   //   }
   // }
+  
   compare(a, b) {
     return b.turn - a.turn;
   }
