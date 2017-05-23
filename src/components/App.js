@@ -5,8 +5,8 @@ import CurrentRoom from './CurrentRoom';
 import RoomNavigation from './RoomNavigation';
 import CharStats from './CharStats';
 import DeathCheck from './DeathCheck';
-// import SomeContent from './SomeContent';
 import Turns from './Turns';
+import ViewBox from './ViewBox';
 
 import { connect } from 'react-redux';
 import {
@@ -51,27 +51,40 @@ class App extends Component {
   }
 
   render() {
+    const roomNav = (
+      <RoomNavigation
+        currentRoom={this.props.currentRoom}
+        updateCurrentRoom={this.updateCurrentRoom}
+      />
+    );
+
+    const buildCombat = (
+      <BuildCombat
+        prevRoom={this.props.prevRoom}
+        backToPrevRoom={this.backToPrevRoom}
+        updateCurrentRoom={this.updateCurrentRoom}
+      />
+    );
+
+    const navOrFight = this.props.currentRoom.enemy ? buildCombat : roomNav;
     return (
       <div style={{ maxWidth: 940, margin: '0 auto' }}>
+
         {this.props.navError &&
           <div style={divStyleFlex}><p>You can't go that way</p></div>}
-        <CurrentRoom currentRoom={this.props.currentRoom} />
 
-        <div className="grid grid-pad">
+        <ViewBox />
+
+        <div className='grid grid-pad'>
+
           <CharStats style={oneThird} />
+          
           <Turns />
+
           {this.props.deathCheck && <DeathCheck />}
-          {!this.props.currentRoom.enemy &&
-            <RoomNavigation
-              currentRoom={this.props.currentRoom}
-              updateCurrentRoom={this.updateCurrentRoom}
-            />}
-          {this.props.currentRoom.enemy &&
-            <BuildCombat
-              prevRoom={this.props.prevRoom}
-              backToPrevRoom={this.backToPrevRoom}
-              updateCurrentRoom={this.updateCurrentRoom}
-            />}
+
+          {navOrFight}
+
         </div>
       </div>
     );

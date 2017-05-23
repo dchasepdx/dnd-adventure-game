@@ -3,7 +3,8 @@ import {divStyleFlex} from '../styles';
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => ({
-  orcDead: state.orcDead
+  orcDead: state.orcDead,
+  currentRoom: state.currentRoom,
 });
 
 class CurrentRoom extends Component {
