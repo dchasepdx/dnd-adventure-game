@@ -7,3 +7,4 @@ export const UPDATE_TURNS = 'UPDATE_TURNS';
 export const ORCS_TURN = 'ORCS_TURN';
 export const DEATH_CHECK = 'DEATH_CHECK';
 export const RESET_STATE = 'RESET_STATE';
+export const CHANGE_FIGHTING = 'CHANGE_FIGHTING';

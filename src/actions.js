@@ -7,6 +7,7 @@ import {
   UPDATE_TURNS,
   ORCS_TURN,
   RESET_STATE,
+  CHANGE_FIGHTING,
   
 } from './constants';
 
@@ -46,4 +47,8 @@ export const setCurrentRoom = (room) => ({
 
 export const backToPrevRoom = () => ({
   type: BACK_TO_PREV_ROOM
+});
+
+export const changeFighting = () => ({
+  type: CHANGE_FIGHTING,
 });

@@ -40,7 +40,6 @@ class App extends Component {
       this.props.dispatch(roomNavError());
       // this.setState({navError: true});
     } else if (e.target.value === 'win') {
-      console.log(e.target.value);
       this.props.dispatch(resetState());
     } else {
       this.props.dispatch(setCurrentRoom(e.target.value));

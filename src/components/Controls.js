@@ -5,7 +5,7 @@ import {buttonStyles, divStyleFlex} from '../styles';
 
 const mapstateToProps = state => ({
   orcsTurn: state.orcsTurn,
-  combatOver: state.combatOver,
+  fighting: state.fighting,
   currentRoom: state.currentRoom,
   orcDead: state.orcDead,
   playerDead: state.playerDead,
@@ -14,17 +14,17 @@ const mapstateToProps = state => ({
 function Controls(props) {
   return (
   <div className='col-1-3' style={divStyleFlex}>
-    {(!props.orcsTurn && !props.combatOver) &&
+    {(!props.orcsTurn && props.fighting) &&
       <div>
         <button style={buttonStyles} onClick={props.combatRound}>fight!</button>
         <button style={buttonStyles} onClick={props.backToPrevRoom}>Run Away!</button>
       </div>
     }
 
-    {(props.combatOver && props.orcDead) &&
-        <button style={buttonStyles} value={props.currentRoom.win} onClick={props.updateCurrentRoom}>next</button>
+    {(!props.fighting && props.orcDead) &&
+      <button style={buttonStyles} value={props.currentRoom.win} onClick={props.updateCurrentRoom}>next</button>
     }
-    {(props.combatOver && props.playerDead) && 
+    {(!props.fighting && props.playerDead) && 
       <button style={buttonStyles} onClick={() => props.dispatch(resetState())}>Restart</button>
     }
 
