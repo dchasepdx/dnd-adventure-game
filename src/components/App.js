@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import BuildCombat from './BuildCombat.js';
-// import adventureZones from './adventureZones';
-import CurrentRoom from './CurrentRoom';
 import RoomNavigation from './RoomNavigation';
 import CharStats from './CharStats';
-import DeathCheck from './DeathCheck';
 import Turns from './Turns';
 import ViewBox from './ViewBox';
-
-import { connect } from 'react-redux';
 import {
   setCurrentRoom,
   backToPrevRoom,
@@ -43,7 +40,6 @@ class App extends Component {
       this.props.dispatch(roomNavError());
       // this.setState({navError: true});
     } else if (e.target.value === 'win') {
-      console.log(e.target.value);
       this.props.dispatch(resetState());
     } else {
       this.props.dispatch(setCurrentRoom(e.target.value));
@@ -81,7 +77,7 @@ class App extends Component {
           
           <Turns />
 
-          {this.props.deathCheck && <DeathCheck />}
+          {/*{this.props.deathCheck && <DeathCheck />}*/}
 
           {navOrFight}
 

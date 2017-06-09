@@ -9,6 +9,7 @@ import {
   UPDATE_TURNS,
   ORCS_TURN,
   RESET_STATE,
+  CHANGE_FIGHTING,
   
 } from './constants';
 
@@ -23,7 +24,7 @@ const initialState = {
   deathCheck: false,
   orcDead: false,
   playerDead: false,
-  combatOver: false,
+  fighting: false,
   turns: []
 };
 
@@ -38,7 +39,6 @@ function updateObject(state, newValues, optionalValues = null) {
 export default function adventureReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CURRENT_ROOM:
-      console.log(action.payload);
       return updateObject(
         state, 
         {
@@ -71,6 +71,12 @@ export default function adventureReducer(state = initialState, action) {
         orcsTurn: !state.orcsTurn
       };
 
+    case CHANGE_FIGHTING:
+      return {
+        ...state,
+        fighting: true
+      };
+
     case RESET_STATE:
       return {
         ...state,
@@ -84,7 +90,7 @@ export default function adventureReducer(state = initialState, action) {
         deathCheck: false,
         orcDead: false,
         playerDead: false,
-        combatOver: false,
+        fighting: false,
         turns: []
       };
 

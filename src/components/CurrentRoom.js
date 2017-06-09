@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {divStyleFlex} from '../styles';
 import {connect} from 'react-redux';
+
+import {divStyleFlex} from '../styles';
 
 const mapStateToProps = state => ({
   orcDead: state.orcDead,

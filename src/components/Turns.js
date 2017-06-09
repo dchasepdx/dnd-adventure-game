@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {} from '../styles';
+import DeathCheck from './DeathCheck';
 
 const mapStateToProps = state => ({
-  turns: state.turns
+  turns: state.turns,
+  deathCheck: state.deathCheck
 });
 
 class Turns extends Component {
@@ -62,6 +63,7 @@ class Turns extends Component {
     
     return (
       <div className='col-1-3'>
+        {this.props.deathCheck && <DeathCheck />}
         {this.props.turns.sort(this.compare).map(t => {
           if (t.whoTurn === 'Stan') {
             return this.playerHitOrMiss(t);

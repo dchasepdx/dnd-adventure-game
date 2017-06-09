@@ -8,6 +8,7 @@ import {
         setPlayerHealth, 
         updateTurns, 
         orcsTurn,
+        changeFighting,
 
        } from '../actions';
 
@@ -19,7 +20,8 @@ const mapStateToProps = state => ({
   orcsTurn: state.orcsTurn,
   deathCheck: state.deathCheck,
   combatOver: state.combatOver,
-  currentRoom: state.currentRoom
+  currentRoom: state.currentRoom,
+  fighting: state.fighting,
 
 });
 
@@ -34,8 +36,17 @@ class BuildCombat extends Component {
     this.combatRound = this.combatRound.bind(this);
   }
 
+  componentDidMount() {
+    console.log('build combat mounted');
+    if (!this.props.deathCheck) {
+      this.props.dispatch(changeFighting());
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps && nextProps.combatOver) {
+    console.log('getting new props', nextProps.fighting);
+    if (this.props !== nextProps && !nextProps.fighting) {
+      console.log('stopped timer', this.enemyTurnTimer);
       clearTimeout(this.enemyTimer);
       clearTimeout(this.enemyTurnTimer);
     }
@@ -52,7 +63,7 @@ class BuildCombat extends Component {
       if (turn.enemyHealth > 0) {
         this.props.dispatch(setEnemyHealth(charHealth));
       } else {
-        this.props.dispatch(setEnemyHealth(charHealth, {orcDead: true, deathCheck: true, orcsTurn: false, combatOver: true}));
+        this.props.dispatch(setEnemyHealth(charHealth, {orcDead: true, deathCheck: true, orcsTurn: false, fighting: false}));
       }
 
     } else {
@@ -64,7 +75,7 @@ class BuildCombat extends Component {
       if (turn.youHealth > 0) {
         this.props.dispatch(setPlayerHealth(charHealth));
       } else {
-        this.props.dispatch(setPlayerHealth(charHealth, {playerDead: true, deathCheck: true, orcsTurn: false, combatOver: true}));
+        this.props.dispatch(setPlayerHealth(charHealth, {playerDead: true, deathCheck: true, orcsTurn: false, fighting: false}));
       }
     }
   }

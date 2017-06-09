@@ -11,7 +11,7 @@ class RoomNavigation extends Component {
     
     let win = <button style={buttonStyles} value={'win'} onClick={this.props.updateCurrentRoom}>You Win! Reset Game</button>;
     let nav = (
-              <div style={divStyleFlex}>
+              <div>
                 <button style={buttonStyles} value={this.props.currentRoom.n} onClick={this.props.updateCurrentRoom}>North</button>
                 <button style={buttonStyles} value={this.props.currentRoom.s} onClick={this.props.updateCurrentRoom}>South</button>
               </div>
