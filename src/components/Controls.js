@@ -11,15 +11,7 @@ const mapstateToProps = state => ({
   playerDead: state.playerDead,
 });
 
-
 function Controls(props) {
-  /*let win = <button style={buttonStyles} value={'win'} onClick={this.props.updateCurrentRoom}>You Win! Reset Game</button>;
-  let nav = (
-            <div>
-              <button style={buttonStyles} value={this.props.currentRoom.n} onClick={this.props.updateCurrentRoom}>North</button>
-              <button style={buttonStyles} value={this.props.currentRoom.s} onClick={this.props.updateCurrentRoom}>South</button>
-            </div>
-            );*/
   return (
   <div className='col-1-3' style={divStyleFlex}>
     {(!props.orcsTurn && !props.combatOver) &&

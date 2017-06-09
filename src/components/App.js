@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import BuildCombat from './BuildCombat.js';
-// import adventureZones from './adventureZones';
-import CurrentRoom from './CurrentRoom';
 import RoomNavigation from './RoomNavigation';
 import CharStats from './CharStats';
-import DeathCheck from './DeathCheck';
 import Turns from './Turns';
 import ViewBox from './ViewBox';
-
-import { connect } from 'react-redux';
 import {
   setCurrentRoom,
   backToPrevRoom,
@@ -21,8 +18,7 @@ const mapStateToProps = state => {
   return {
     currentRoom: state.currentRoom,
     prevRoom: state.prevRoom,
-    navError: state.navError,
-    deathCheck: state.deathCheck
+    navError: state.navError
   };
 };
 
@@ -82,7 +78,7 @@ class App extends Component {
           
           <Turns />
 
-          {this.props.deathCheck && <DeathCheck />}
+          {/*{this.props.deathCheck && <DeathCheck />}*/}
 
           {navOrFight}
 

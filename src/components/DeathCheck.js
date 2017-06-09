@@ -8,15 +8,13 @@ const mapStateToProps = state => ({
 class DeathCheck extends Component {
   render() {
     let lastTurn;
-    let deathNotice;
+    let deathNotice = null;
     if (this.props.turns.length) {
       lastTurn = this.props.turns[0];
-      deathNotice = <p>Turn {lastTurn.turn}: {lastTurn.whoTurn} is victorious!</p>;
+      deathNotice = `Turn ${lastTurn.turn}: ${lastTurn.whoTurn} is victorious!`;
     }
     return (
-      <div>
-        {deathNotice}
-      </div>
+      <p>{deathNotice}</p>
     );
   }
 }
