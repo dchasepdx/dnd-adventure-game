@@ -8,7 +8,7 @@ const MapStateToProps = state => ({
 
 class CharStats extends Component {
   render() {
-    const player = this.props.chars.Stan;
+    const player = this.props.chars.stan;
 
     return (
       <div className='col-1-3'>

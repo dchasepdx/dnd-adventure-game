@@ -1,5 +1,5 @@
 import adventureZones from './data/adventureZones';
-import chars from './data/chars';
+import * as chars from './data/chars';
 import {
   SET_CURRENT_ROOM,
   BACK_TO_PREV_ROOM,
@@ -18,8 +18,8 @@ const initialState = {
   prevRoom: null,
   navError: null,
   chars: chars,
-  youHealth: chars.Stan.health,
-  enemyHealth: chars.Orc.health,
+  youHealth: chars.stan.health,
+  enemyHealth: chars.orc.health,
   orcsTurn: false,
   deathCheck: false,
   orcDead: false,

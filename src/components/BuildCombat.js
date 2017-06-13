@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import diceRoller from './diceRoller';
+import diceRoller from '../data/diceRoller';
 import Controls from './Controls';
 import {connect} from 'react-redux';
 
