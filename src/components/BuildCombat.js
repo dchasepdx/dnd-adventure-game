@@ -7,17 +7,17 @@ import {
         setEnemyHealth, 
         setPlayerHealth, 
         updateTurns, 
-        orcsTurn,
+        playerTurn,
         changeFighting,
 
        } from '../actions';
 
 const mapStateToProps = state => ({
-  enemyHealth: state.enemyHealth,
+  enemyHealth: 1000,
   youHealth: state.youHealth,
   turns: state.turns,
   chars: state.chars,
-  orcsTurn: state.orcsTurn,
+  playerTurn: state.playerTurn,
   deathCheck: state.deathCheck,
   combatOver: state.combatOver,
   currentRoom: state.currentRoom,
@@ -37,16 +37,14 @@ class BuildCombat extends Component {
   }
 
   componentDidMount() {
-    console.log('build combat mounted');
     if (!this.props.deathCheck) {
       this.props.dispatch(changeFighting());
+      this.props.dispatch(playerTurn());
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('getting new props', nextProps.fighting);
     if (this.props !== nextProps && !nextProps.fighting) {
-      console.log('stopped timer', this.enemyTurnTimer);
       clearTimeout(this.enemyTimer);
       clearTimeout(this.enemyTurnTimer);
     }
@@ -63,7 +61,7 @@ class BuildCombat extends Component {
       if (turn.enemyHealth > 0) {
         this.props.dispatch(setEnemyHealth(charHealth));
       } else {
-        this.props.dispatch(setEnemyHealth(charHealth, {orcDead: true, deathCheck: true, orcsTurn: false, fighting: false}));
+        this.props.dispatch(setEnemyHealth(charHealth, {orcDead: true, deathCheck: true, playerTurn: false, fighting: false}));
       }
 
     } else {
@@ -75,12 +73,28 @@ class BuildCombat extends Component {
       if (turn.youHealth > 0) {
         this.props.dispatch(setPlayerHealth(charHealth));
       } else {
-        this.props.dispatch(setPlayerHealth(charHealth, {playerDead: true, deathCheck: true, orcsTurn: false, fighting: false}));
+        this.props.dispatch(setPlayerHealth(charHealth, {playerDead: true, deathCheck: true, playerTurn: false, fighting: false}));
       }
     }
   }
 
   fight(char, enemy) {
+
+    // const {stan, orc} = this.props.chars;
+    // let turn = stan.attack(orc.ac);
+    // turn.whoTurn = 'Stan';
+    // if (turn.hit) {
+    //   let charHealth = this.props.enemyHealth;
+    //   turn.damage = stan.damage();
+    //   charHealth -= turn.damage;
+    //   turn.enemyHealth = charHealth;
+    //   if (turn.enemyHealth > 0) {
+    //     this.props.dispatch(setEnemyHealth(charHealth));
+    //   } else {
+    //     this.props.dispatch(setEnemyHealth(charHealth, {orcDead: true, deathCheck: true, playerTurn: false, fighting: false}));
+    //   }
+    // }
+
     let turn = {whoTurn: char};
     let roll = diceRoller(20, 1) + this.props.chars[char].atk;
     if (roll >= this.props.chars[enemy].ac) {
@@ -95,15 +109,23 @@ class BuildCombat extends Component {
     this.props.dispatch(updateTurns(turn));
   }
 
-  combatRound() {
-    this.fight('Stan', 'Orc');
-    this.enemyTurnTimer = setTimeout(() => {
-      this.props.dispatch(orcsTurn());
-    }, 500);
-    this.enemyTimer = setTimeout(() => {
-      this.props.dispatch(orcsTurn());
-      this.fight('Orc', 'Stan');
-    }, 2000);
+  combatRound(attacker, defender) {
+    let turn = attacker.attack(defender.ac);
+    turn.whoTurn = attacker.id;
+    if (turn.hit) {
+      let charHealth = this.props.enemyHealth;
+      turn.damage = attacker.damage();
+      charHealth -= turn.damage;
+      turn.enemyHealth = charHealth;
+      if (turn.enemyHealth > 0) {
+        this.props.dispatch(setEnemyHealth(charHealth));
+      } else {
+        this.props.dispatch(setEnemyHealth(charHealth, {orcDead: true, deathCheck: true, playerTurn: false, fighting: false}));
+      }
+    }
+    turn.turn = (this.props.turns.length + 1).toString();
+    this.props.dispatch(updateTurns(turn));
+    this.props.dispatch(playerTurn());
   };
 
   render() {
@@ -111,14 +133,9 @@ class BuildCombat extends Component {
       <div> 
         {/*<Turns  />*/}
 
-        {this.props.orcsTurn && 
-          <p>Enemy's turn</p>
-        }
-
           <Controls 
             prevRoom={this.props.prevRoom}
             backToPrevRoom={this.props.backToPrevRoom}
-            orcsTurn={this.props.orcsTurn} 
             combatRound={this.combatRound} 
             updateCurrentRoom={this.props.updateCurrentRoom}
           />

@@ -7,9 +7,10 @@ import {
   SET_ENEMY_HEALTH,
   SET_PLAYER_HEALTH,
   UPDATE_TURNS,
-  ORCS_TURN,
+  PLAYER_TURN,
   RESET_STATE,
   CHANGE_FIGHTING,
+  CHANGE_TARGET,
   
 } from './constants';
 
@@ -19,13 +20,17 @@ const initialState = {
   navError: null,
   chars: chars,
   youHealth: chars.stan.health,
-  enemyHealth: chars.orc.health,
-  orcsTurn: false,
+  enemyHealth: null,
+  playerTurn: false,
   deathCheck: false,
   orcDead: false,
   playerDead: false,
   fighting: false,
-  turns: []
+  turns: [],
+  initiativeOrder: [chars.stan, chars.orc],
+  enemies: [chars.orc, chars.targetDummy],
+  goodGuys: [chars.stan, chars.targetDummy],
+  target: null
 };
 
 function updateObject(state, newValues, optionalValues = null) {
@@ -65,10 +70,10 @@ export default function adventureReducer(state = initialState, action) {
         turns: state.turns.concat(action.payload)
       };
 
-    case ORCS_TURN:
+    case PLAYER_TURN:
       return {
         ...state,
-        orcsTurn: !state.orcsTurn
+        playerTurn: !state.playerTurn
       };
 
     case CHANGE_FIGHTING:
@@ -84,14 +89,23 @@ export default function adventureReducer(state = initialState, action) {
         prevRoom: null,
         navError: null,
         chars: chars,
-        youHealth: chars.Stan.health,
-        enemyHealth: chars.Orc.health,
+        youHealth: chars.stan.health,
+        enemyHealth: chars.orc.health,
         orcsTurn: false,
         deathCheck: false,
         orcDead: false,
         playerDead: false,
         fighting: false,
-        turns: []
+        turns: [],
+        initiativeOrder: [chars.stan, chars.orc],
+        enemies: [chars.orc, chars.targetDummy],
+        target: null
+      };
+
+    case CHANGE_TARGET:
+      return {
+        ...state,
+        target: action.payload
       };
 
     default:

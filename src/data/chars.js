@@ -24,19 +24,25 @@ class Character {
   }
 
   attack(enemyAc) {
-    const roll = diceRoller(20, 1);
+    let roll = diceRoller(20, 1);
+    roll += this.atk;
     const hit = (roll >= enemyAc);
-    return hit;
+    return {
+      hit,
+      roll
+    };
   }
 
   damage() {
-    const damageDone = diceRoller(6, 1);
+    let damageDone = diceRoller(6, 1);
+    damageDone += this.atk;
     return damageDone;
   }
 }
 
 export const stan = new Character('stan', 13, 2, 10);
 export const orc = new Character('orc', 10, 1, 10);
+export const targetDummy = new Character('dummy', 10, 0, 1000);
 
 
 

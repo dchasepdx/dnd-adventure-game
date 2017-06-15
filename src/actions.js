@@ -5,9 +5,10 @@ import {
   SET_ENEMY_HEALTH,
   SET_PLAYER_HEALTH,
   UPDATE_TURNS,
-  ORCS_TURN,
+  PLAYER_TURN,
   RESET_STATE,
   CHANGE_FIGHTING,
+  CHANGE_TARGET,
   
 } from './constants';
 
@@ -15,8 +16,8 @@ export const resetState = () => ({
   type: RESET_STATE
 });
 
-export const orcsTurn = () => ({
-  type: ORCS_TURN
+export const playerTurn = () => ({
+  type: PLAYER_TURN
 });
 
 export const updateTurns = (turn) => ({
@@ -52,3 +53,10 @@ export const backToPrevRoom = () => ({
 export const changeFighting = () => ({
   type: CHANGE_FIGHTING,
 });
+
+export const changeTarget = (newTarget) => {
+  return {
+    type: CHANGE_TARGET,
+    payload: newTarget
+  };
+};

@@ -65,7 +65,7 @@ class Turns extends Component {
       <div className='col-1-3'>
         {this.props.deathCheck && <DeathCheck />}
         {this.props.turns.sort(this.compare).map(t => {
-          if (t.whoTurn === 'Stan') {
+          if (t.whoTurn === 'stan') {
             return this.playerHitOrMiss(t);
           } else {
             return this.enemyHitOrMiss(t);
