@@ -110,17 +110,18 @@ class BuildCombat extends Component {
   }
 
   combatRound(attacker, defender) {
+    console.log(attacker, defender);
     let turn = attacker.attack(defender.ac);
     turn.whoTurn = attacker.id;
     if (turn.hit) {
-      let charHealth = this.props.enemyHealth;
+      let charHealth = attacker.health;
       turn.damage = attacker.damage();
       charHealth -= turn.damage;
       turn.enemyHealth = charHealth;
       if (turn.enemyHealth > 0) {
-        this.props.dispatch(setEnemyHealth(charHealth));
+        this.props.dispatch(setEnemyHealth(charHealth, defender));
       } else {
-        this.props.dispatch(setEnemyHealth(charHealth, {orcDead: true, deathCheck: true, playerTurn: false, fighting: false}));
+        this.props.dispatch(setEnemyHealth(charHealth, defender, {orcDead: true, deathCheck: true, playerTurn: false, fighting: false}));
       }
     }
     turn.turn = (this.props.turns.length + 1).toString();

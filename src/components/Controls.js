@@ -15,6 +15,7 @@ const mapstateToProps = state => ({
   initiativeOrder: state.initiativeOrder,
   enemies: state.enemies,
   target: state.target,
+  enemyTarget: state.enemyTarget,
 });
 
 class Controls extends Component {
@@ -72,7 +73,7 @@ class Controls extends Component {
 
       {(!this.props.playerTurn && this.props.fighting) &&
         <button style={buttonStyles} onClick={() => {
-          this.props.combatRound(currentCharTurn, this.props.target);
+          this.props.combatRound(currentCharTurn, this.props.enemyTarget);
           this.incrementIndex();
         }}
           >Enemy Turn
