@@ -28,7 +28,7 @@ class App extends Component {
     this.updateCurrentRoom = this.updateCurrentRoom.bind(this);
     this.backToPrevRoom = this.backToPrevRoom.bind(this);
   }
-
+  
   backToPrevRoom(e) {
     e.preventDefault();
     this.props.dispatch(backToPrevRoom());
